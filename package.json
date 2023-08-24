@@ -9,6 +9,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "antd": "^5.8.4",
+    "axios": "^1.4.0",
     "umi": "^4.0.76"
   },
   "devDependencies": {

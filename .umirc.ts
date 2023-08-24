@@ -1,9 +1,12 @@
 import { defineConfig } from "umi";
 
 export default defineConfig({
+  mfsu: false,
   routes: [
-    { path: "/", component: "index" },
+    { path: "/", redirect: "/login" },
     { path: "/docs", component: "docs" },
+    { path: "/login", component: "Login" },
+    { path: "/*", component: "@/pages/ErrorPage.tsx" },
   ],
-  npmClient: 'pnpm',
+  npmClient: "pnpm",
 });
