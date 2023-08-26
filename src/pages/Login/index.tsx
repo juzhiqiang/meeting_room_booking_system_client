@@ -1,13 +1,25 @@
-import { Button, Form, Input } from 'antd';
-import styles from './index.less';
+import { Button, Form, Input, message } from "antd";
+import styles from "./index.less";
+import { login } from "../api";
 
 interface LoginUser {
   username: string;
   password: string;
 }
 
-const onSubmit = (infos: LoginUser) => {
-  console.log(infos);
+const onSubmit = async (infos: LoginUser) => {
+  const res = await login(infos.username, infos.password);
+
+  const { code, message: msg, data } = res.data;
+  if (code === 201 ||code === 200) {
+    message.success("登录成功");
+    localStorage.setItem("access_token", data.access_token);
+    localStorage.setItem("refresh_token", data.refresh_token);
+    localStorage.setItem("user_info", JSON.stringify(data.userInfo));
+    console.log(res);
+  } else {
+    message.error(data || "登录异常，请重新登录");
+  }
 };
 
 const Login = () => {
@@ -25,20 +37,20 @@ const Login = () => {
         <Form.Item
           label="用户名"
           name="username"
-          rules={[{ required: true, message: '请输入用户名' }]}
+          rules={[{ required: true, message: "请输入用户名" }]}
         >
           <Input></Input>
         </Form.Item>
         <Form.Item
           label="密码"
           name="password"
-          rules={[{ required: true, message: '请输入密码' }]}
+          rules={[{ required: true, message: "请输入密码" }]}
         >
           <Input.Password />
         </Form.Item>
         <Form.Item labelCol={{ span: 0 }} wrapperCol={{ span: 24 }}>
           <div className={styles.create}>
-            <a href="">创建账号</a>
+            <a href="/register">创建账号</a>
             <a href="">忘记密码</a>
           </div>
         </Form.Item>

@@ -1,5 +1,4 @@
-.login {
-  min-width: 1200px;
+.register {
   h1 {
     display: flex;
     justify-content: space-between;
@@ -29,11 +28,26 @@
       font-weight: 700;
     }
 
-    .create {
+    .goLogin {
       display: flex;
-      justify-content: space-between;
-      a {
-        color: #cc7a29;
+      justify-content: flex-end;
+      color: #cc7a29;
+    }
+
+    .captchaWrapper {
+      display: flex;
+      justify-content: flex-end;
+      .code {
+        width: 150px;
+      }
+      .sendcode {
+        width: 100px;
+        margin-left: 10px;
+      }
+      .count{
+        color: #fff;
+        font-size: 13px;
+        line-height: 18px;
       }
     }
 

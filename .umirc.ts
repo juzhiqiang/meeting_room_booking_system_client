@@ -4,7 +4,7 @@ export default defineConfig({
   mfsu: false,
   routes: [
     { path: "/", redirect: "/login" },
-    { path: "/docs", component: "docs" },
+    { path: "/register", component: "Register" },
     { path: "/login", component: "Login" },
     { path: "/*", component: "@/pages/ErrorPage.tsx" },
   ],
