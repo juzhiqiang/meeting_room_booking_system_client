@@ -1,6 +1,7 @@
 import { Button, Form, Input, message } from "antd";
 import styles from "./index.less";
 import { login } from "../api";
+import { Link } from "umi";
 
 interface LoginUser {
   username: string;
@@ -11,7 +12,7 @@ const onSubmit = async (infos: LoginUser) => {
   const res = await login(infos.username, infos.password);
 
   const { code, message: msg, data } = res.data;
-  if (code === 201 ||code === 200) {
+  if (code === 201 || code === 200) {
     message.success("登录成功");
     localStorage.setItem("access_token", data.access_token);
     localStorage.setItem("refresh_token", data.refresh_token);
@@ -25,7 +26,6 @@ const onSubmit = async (infos: LoginUser) => {
 const Login = () => {
   return (
     <div className={styles.login}>
-      <h1>会议室预定系统</h1>
       <Form
         className={styles.form}
         labelCol={{ span: 4 }}
@@ -50,8 +50,8 @@ const Login = () => {
         </Form.Item>
         <Form.Item labelCol={{ span: 0 }} wrapperCol={{ span: 24 }}>
           <div className={styles.create}>
-            <a href="/register">创建账号</a>
-            <a href="">忘记密码</a>
+            <Link to="/register">创建账号</Link>
+            <Link to="/updatePassword">忘记密码</Link>
           </div>
         </Form.Item>
         <Form.Item labelCol={{ span: 0 }} wrapperCol={{ span: 24 }}>
@@ -60,8 +60,6 @@ const Login = () => {
           </Button>
         </Form.Item>
       </Form>
-
-      <footer>juzhiqiang @2023 会议室预定系统</footer>
     </div>
   );
 };

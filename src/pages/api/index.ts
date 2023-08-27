@@ -1,6 +1,7 @@
 import axios from "axios";
 import { axiosInstance } from "./requireInterface";
 import { RegisterUser } from "../Register";
+import { UpdatePassword } from "../UpdatePassword";
 
 // 登录接口
 export const login = async (username: string, password: string) => {
@@ -33,3 +34,17 @@ export const registerCaptcha = async (address: string) => {
     },
   });
 };
+
+// 获取更新密码验证码
+export const updatePasswordCaptcha = async (emial: string) => {
+  return await axiosInstance.get("/user/update_password/captcha", {
+    params: {
+      address: emial,
+    },
+  });
+};
+
+// 更新密码
+export async function updatePassword(data: UpdatePassword) {
+  return await axiosInstance.post("/user/update_password", data);
+}

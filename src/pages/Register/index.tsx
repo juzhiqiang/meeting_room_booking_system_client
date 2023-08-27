@@ -149,7 +149,6 @@ const Register = () => {
         </Form.Item>
       </Form>
 
-      <footer>juzhiqiang @2023 会议室预定系统</footer>
     </div>
   );
 };
