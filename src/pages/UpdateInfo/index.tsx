@@ -1,25 +1,40 @@
-import { Button, Form, Input, message } from "antd";
+import { Avatar, Button, Form, Input, Upload, message } from "antd";
 import styles from "./index.less";
-import { login, register, registerCaptcha } from "../api";
+import { getUserInfo, updateInfo, updateUserInfoCaptcha } from "../api";
 import { useForm } from "antd/es/form/Form";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "umi";
 import Countdown from "antd/es/statistic/Countdown";
 
-export interface RegisterUser {
-  username: string;
+export interface UserInfo {
+  headPic: string;
   nickName: string;
-  password: string;
-  confirmPassword: string;
   email: string;
   captcha: string;
 }
 
-const Register = () => {
+const UpdateInfo = () => {
   const [form] = useForm();
-  const navigate = useNavigate();
   const [isClickCode, setIsClickCode] = useState(true);
   const [outTime, setOutTime] = useState(0);
+  const [headPic, setHeadPic] = useState("");
+
+  const getInfo = async () => {
+    const res = await getUserInfo();
+
+    const { data } = res.data;
+
+    if (res.status === 201 || res.status === 200) {
+      form.setFieldValue("headPic", data.headPic);
+      form.setFieldValue("nickName", data.nickName);
+      form.setFieldValue("email", data.email);
+      console.log(data);
+    }
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   // 获取验证码
   const sendCaptcha = useCallback(async () => {
@@ -27,7 +42,7 @@ const Register = () => {
     const address = form.getFieldValue("email");
     if (!address) return message.error("请输入邮箱地址");
 
-    const res = await registerCaptcha(address);
+    const res = await updateUserInfoCaptcha();
     const { code, message: msg, data } = res.data;
     if (code === 201 || code === 200) {
       message.success(data);
@@ -39,22 +54,26 @@ const Register = () => {
     }
   }, []);
 
-  const onFinish = useCallback(async (infos: RegisterUser) => {
-    if (infos.password !== infos.confirmPassword)
-      return message.error("两次密码不一致");
-
-    const res = await register(infos);
+  const onFinish = useCallback(async (infos: UserInfo) => {
+    const res = await updateInfo(infos);
 
     const { code, message: msg, data } = res.data;
     if (code === 201 || code === 200) {
-      message.success("登录成功");
-
-      console.log(res);
-      navigate("/login");
+      message.success("修改成功");
     } else {
-      message.error(data || "登录异常，请重新登录");
+      message.error(data || "系统繁忙，请稍后再试");
     }
   }, []);
+
+  const handleChange = (info) => {
+    const { status } = info.file;
+    if (status === "done") {
+      setHeadPic(info.file.response.data);
+      message.success(`${info.file.name} 文件上传成功`);
+    } else if (status === "error") {
+      message.error(`${info.file.name} 文件上传失败`);
+    }
+  };
   return (
     <div className={styles.register}>
       <Form
@@ -67,34 +86,27 @@ const Register = () => {
         colon={false}
         autoComplete="off"
       >
-        <div className={styles.subtit}>注册账号</div>
         <Form.Item
-          label="用户名"
-          name="username"
+          label="头像"
+          name="headPic"
           rules={[{ required: true, message: "请输入用户名" }]}
         >
-          <Input></Input>
+          <Upload
+            listType="picture-circle"
+            showUploadList={false}
+            name="file"
+            action="http://localhost:3000/user/upload"
+            onChange={handleChange}
+          >
+            <img src={headPic} alt="avatar" style={{ width: "100%" }} />
+          </Upload>
         </Form.Item>
         <Form.Item
           label="昵称"
           name="nickName"
-          rules={[{ required: true, message: "请输入昵称" }]}
-        >
-          <Input></Input>
-        </Form.Item>
-        <Form.Item
-          label="密码"
-          name="password"
           rules={[{ required: true, message: "请输入密码" }]}
         >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          label="确认密码"
-          name="confirmPassword"
-          rules={[{ required: true, message: "请再次输入密码" }]}
-        >
-          <Input.Password />
+          <Input />
         </Form.Item>
         <Form.Item
           label="邮箱"
@@ -104,7 +116,7 @@ const Register = () => {
             { type: "email", message: "请输入合法邮箱" },
           ]}
         >
-          <Input />
+          <Input disabled />
         </Form.Item>
         <div className={styles.captchaWrapper}>
           <Form.Item
@@ -137,19 +149,13 @@ const Register = () => {
         </div>
 
         <Form.Item labelCol={{ span: 0 }} wrapperCol={{ span: 24 }}>
-          <Link to="/login" className={styles.goLogin}>
-            已有账号?去登录
-          </Link>
-        </Form.Item>
-        <Form.Item labelCol={{ span: 0 }} wrapperCol={{ span: 24 }}>
           <Button className={styles.submit} type="primary" htmlType="submit">
-            注册
+            修改信息
           </Button>
         </Form.Item>
       </Form>
-
     </div>
   );
 };
 
-export default Register;
+export default UpdateInfo;

@@ -14,8 +14,8 @@ const onSubmit = async (infos: LoginUser) => {
   const { code, message: msg, data } = res.data;
   if (code === 201 || code === 200) {
     message.success("登录成功");
-    localStorage.setItem("access_token", data.access_token);
-    localStorage.setItem("refresh_token", data.refresh_token);
+    localStorage.setItem("access_token", data.accessToken);
+    localStorage.setItem("refresh_token", data.refreshToken);
     localStorage.setItem("user_info", JSON.stringify(data.userInfo));
     console.log(res);
   } else {

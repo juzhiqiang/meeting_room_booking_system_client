@@ -1,5 +1,6 @@
 import { Link, Outlet } from "umi";
 import styles from "./index.less";
+import { UserOutlined } from "@ant-design/icons";
 
 export default function Layout() {
   return (
@@ -7,7 +8,8 @@ export default function Layout() {
       <header>
         <h1>会议室预定系统</h1>
         <div>
-          <UserOutlined />
+          <Link to="/update_info"><UserOutlined className={styles.icon} /></Link>
+          
         </div>
       </header>
       <Outlet />
