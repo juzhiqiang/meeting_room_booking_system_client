@@ -1,7 +1,7 @@
 import { Button, Form, Input, message } from "antd";
 import styles from "./index.less";
 import { adminLogin, login } from "../api";
-import { Link } from "umi";
+import { Link, history } from "umi";
 import { useEffect, useState } from "react";
 
 interface LoginUser {
@@ -15,6 +15,7 @@ const type: any = {
 };
 
 const Login = () => {
+  // admin 时候是普通用户登录，user时候是管理员登录
   const [typeLogin, setTypeLogin] = useState("admin");
 
   const onSubmit = async (infos: LoginUser) => {
@@ -29,7 +30,10 @@ const Login = () => {
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
       localStorage.setItem("user_info", JSON.stringify(data.userInfo));
-      console.log(res);
+      if (typeLogin === "admin") {
+      } else {
+        history.push("/admin/userManage");
+      }
     } else {
       message.error(data || "登录异常，请重新登录");
     }

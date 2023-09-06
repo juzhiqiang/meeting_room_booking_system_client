@@ -81,3 +81,23 @@ export const refreshToken = async () => {
   localStorage.setItem("refresh_token", res.data.refresh_token || "");
   return res;
 };
+
+// 后台管理系列--------------------------------------------------------------------------------------
+// 获取用户列表
+export async function getUserList(
+  username: string,
+  nickName: string,
+  email: string,
+  pageNo: number,
+  pageSize: number
+) {
+  return await axiosInstance.get("/user/list", {
+    params: {
+      username,
+      nickName,
+      email,
+      pageNo,
+      pageSize,
+    },
+  });
+}
