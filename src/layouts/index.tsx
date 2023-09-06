@@ -9,7 +9,6 @@ export default function Layout() {
         <h1>会议室预定系统</h1>
         <div>
           <Link to="/update_info"><UserOutlined className={styles.icon} /></Link>
-          
         </div>
       </header>
       <Outlet />

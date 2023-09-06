@@ -1,29 +1,39 @@
 import { Button, Form, Input, message } from "antd";
 import styles from "./index.less";
-import { login } from "../api";
+import { adminLogin, login } from "../api";
 import { Link } from "umi";
+import { useEffect, useState } from "react";
 
 interface LoginUser {
   username: string;
   password: string;
 }
 
-const onSubmit = async (infos: LoginUser) => {
-  const res = await login(infos.username, infos.password);
-
-  const { code, message: msg, data } = res.data;
-  if (code === 201 || code === 200) {
-    message.success("登录成功");
-    localStorage.setItem("access_token", data.accessToken);
-    localStorage.setItem("refresh_token", data.refreshToken);
-    localStorage.setItem("user_info", JSON.stringify(data.userInfo));
-    console.log(res);
-  } else {
-    message.error(data || "登录异常，请重新登录");
-  }
+const type: any = {
+  admin: "管理员",
+  user: "vip用户",
 };
 
 const Login = () => {
+  const [typeLogin, setTypeLogin] = useState("admin");
+
+  const onSubmit = async (infos: LoginUser) => {
+    const res =
+      typeLogin === "admin"
+        ? await login(infos.username, infos.password)
+        : await adminLogin(infos.username, infos.password);
+
+    const { code, message: msg, data } = res.data;
+    if (code === 201 || code === 200) {
+      message.success("登录成功");
+      localStorage.setItem("access_token", data.accessToken);
+      localStorage.setItem("refresh_token", data.refreshToken);
+      localStorage.setItem("user_info", JSON.stringify(data.userInfo));
+      console.log(res);
+    } else {
+      message.error(data || "登录异常，请重新登录");
+    }
+  };
   return (
     <div className={styles.login}>
       <Form
@@ -33,6 +43,12 @@ const Login = () => {
         onFinish={onSubmit}
         autoComplete="off"
       >
+        <div
+          className={styles.tabLogin}
+          onClick={() => setTypeLogin(typeLogin === "admin" ? "user" : "admin")}
+        >
+          切换{type[typeLogin]}登录
+        </div>
         <div className={styles.subtit}>登录</div>
         <Form.Item
           label="用户名"

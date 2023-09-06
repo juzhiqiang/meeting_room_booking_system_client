@@ -98,7 +98,11 @@ const UpdateInfo = () => {
             action="http://localhost:3000/user/upload"
             onChange={handleChange}
           >
-            <img src={headPic} alt="avatar" style={{ width: "100%" }} />
+            <img
+              src={"http://localhost:3000/" + headPic}
+              alt="avatar"
+              style={{ width: "100%" }}
+            />
           </Upload>
         </Form.Item>
         <Form.Item

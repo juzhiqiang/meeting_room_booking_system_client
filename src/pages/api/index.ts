@@ -9,6 +9,11 @@ export const login = async (username: string, password: string) => {
   return await axiosInstance.post("/user/login", { username, password });
 };
 
+// 后台管理者登录
+export const adminLogin = async (username: string, password: string) => {
+  return await axiosInstance.post("/user/admin/login", { username, password });
+};
+
 // 注册接口
 export const register = async ({
   username,
