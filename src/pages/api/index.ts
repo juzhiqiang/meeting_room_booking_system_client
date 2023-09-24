@@ -1,8 +1,28 @@
-import axios from "axios";
 import { axiosInstance } from "./requireInterface";
 import { RegisterUser } from "../Register";
 import { UpdatePassword } from "../UpdatePassword";
 import { UserInfo } from "../UpdateInfo";
+// 通过接口-------------------------------------------------------------------
+// 获取用户信息
+export const getUserInfo = async () => {
+  return await axiosInstance.get("/user/info");
+};
+
+// 获取更新用户信息验证码
+export const updateUserInfoCaptcha = async () => {
+  return await axiosInstance.get("/user/update/captcha");
+};
+
+// 获取更新密码验证码
+export const updatePasswordCaptcha = async (emial: string) => {
+  return await axiosInstance.get("/user/update_password/captcha", {
+    params: {
+      address: emial,
+    },
+  });
+};
+
+// 客户端接口-------------------------------------------------------
 
 // 登录接口
 export const login = async (username: string, password: string) => {
@@ -33,19 +53,9 @@ export const register = async ({
 
 // 获取注册验证码
 export const registerCaptcha = async (address: string) => {
-  console.log(address);
   return await axiosInstance.get("/user/register-captcha", {
     params: {
       address: address,
-    },
-  });
-};
-
-// 获取更新密码验证码
-export const updatePasswordCaptcha = async (emial: string) => {
-  return await axiosInstance.get("/user/update_password/captcha", {
-    params: {
-      address: emial,
     },
   });
 };
@@ -55,19 +65,9 @@ export async function updatePassword(data: UpdatePassword) {
   return await axiosInstance.post("/user/update_password", data);
 }
 
-// 获取用户信息
-export const getUserInfo = async () => {
-  return await axiosInstance.get("/user/info");
-};
-
 // 更新用户信息
 export const updateInfo = async (data: UserInfo) => {
   return await axiosInstance.post("/user/update", data);
-};
-
-// 获取更新用户信息验证码
-export const updateUserInfoCaptcha = async () => {
-  return await axiosInstance.get("/user/update/captcha");
 };
 
 // 更新token
@@ -100,4 +100,12 @@ export async function getUserList(
       pageSize,
     },
   });
+}
+
+export async function updateAdminInfo(data: UserInfo) {
+  return await axiosInstance.post("/user/update/admin", data);
+}
+
+export async function updateAdminPassword(data: UpdatePassword) {
+  return await axiosInstance.post("/user/admin/update_password", data);
 }

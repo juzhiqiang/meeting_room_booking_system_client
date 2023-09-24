@@ -28,6 +28,12 @@ const queue: PendingTask[] = [];
 
 axiosInstance.interceptors.response.use(
   (response) => {
+    let { data, config } = response;
+    console.log(data);
+    if (data.code === 401) {
+      window.localStorage.setItem("roles", "{}");
+      window.location.href = "/login";
+    }
     return response;
   },
   async (error) => {
@@ -41,7 +47,6 @@ axiosInstance.interceptors.response.use(
         });
       });
     }
-
     if (data.code === 401 && !config.url.includes("/user/refresh")) {
       refreshing = true;
 

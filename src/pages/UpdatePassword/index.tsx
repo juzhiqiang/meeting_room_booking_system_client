@@ -1,16 +1,11 @@
 import { Button, Form, Input, message } from "antd";
 import styles from "./index.less";
-import {
-  login,
-  register,
-  registerCaptcha,
-  updatePassword,
-  updatePasswordCaptcha,
-} from "../api";
+import { getUserInfo, updatePassword, updatePasswordCaptcha } from "../api";
 import { useForm } from "antd/es/form/Form";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "umi";
 import Countdown from "antd/es/statistic/Countdown";
+import { isAdmin } from "@/unitls";
 
 export interface UpdatePassword {
   username: string;
@@ -25,6 +20,19 @@ const UpdatePassword = () => {
   const navigate = useNavigate();
   const [isClickCode, setIsClickCode] = useState(true);
   const [outTime, setOutTime] = useState(0);
+
+  const userInfo = async () => {
+    const res = await getUserInfo();
+    const { data } = res.data;
+    if (res.status === 201 || res.status === 200) {
+      form.setFieldValue("username", data.username);
+      form.setFieldValue("email", data.email);
+    }
+  };
+
+  useEffect(() => {
+    if (isAdmin()) userInfo();
+  }, []);
 
   // 获取验证码
   const sendCaptcha = useCallback(async () => {
@@ -48,13 +56,17 @@ const UpdatePassword = () => {
     if (infos.password !== infos.confirmPassword)
       return message.error("两次密码不一致");
 
-    const res = await updatePassword(infos);
+    const res = isAdmin()
+      ? await updatePassword({
+          ...infos,
+          username: form.getFieldValue("username"),
+        })
+      : await updatePassword(infos);
 
     const { message: msg, data } = res.data;
-
     if (res.status === 201 || res.status === 200) {
       message.success("密码修改成功").then(() => {
-        navigate("/login", {});
+        !isAdmin() && navigate("/login", {});
       });
     } else {
       message.error(data || "系统繁忙，请稍后再试");
@@ -72,14 +84,18 @@ const UpdatePassword = () => {
         colon={false}
         autoComplete="off"
       >
-        <div className={styles.subtit}>找回密码</div>
-        <Form.Item
-          label="用户名"
-          name="username"
-          rules={[{ required: true, message: "请输入用户名" }]}
-        >
-          <Input />
-        </Form.Item>
+        {!isAdmin() && (
+          <>
+            <div className={styles.subtit}>找回密码</div>
+            <Form.Item
+              label="用户名"
+              name="username"
+              rules={[{ required: true, message: "请输入用户名" }]}
+            >
+              <Input />
+            </Form.Item>
+          </>
+        )}
         <Form.Item
           label="新密码"
           name="password"
@@ -102,7 +118,7 @@ const UpdatePassword = () => {
             { type: "email", message: "请输入合法邮箱" },
           ]}
         >
-          <Input />
+          <Input disabled={isAdmin()} />
         </Form.Item>
         <div className={styles.captchaWrapper}>
           <Form.Item

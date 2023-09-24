@@ -1,10 +1,16 @@
 import { Avatar, Button, Form, Input, Upload, message } from "antd";
 import styles from "./index.less";
-import { getUserInfo, updateInfo, updateUserInfoCaptcha } from "../api";
+import {
+  getUserInfo,
+  updateAdminInfo,
+  updateInfo,
+  updateUserInfoCaptcha,
+} from "../api";
 import { useForm } from "antd/es/form/Form";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "umi";
 import Countdown from "antd/es/statistic/Countdown";
+import { getRolesInfo, isAdmin } from "@/unitls";
 
 export interface UserInfo {
   headPic: string;
@@ -19,16 +25,16 @@ const UpdateInfo = () => {
   const [outTime, setOutTime] = useState(0);
   const [headPic, setHeadPic] = useState("");
 
+  // 获取用户信息
   const getInfo = async () => {
     const res = await getUserInfo();
 
     const { data } = res.data;
 
     if (res.status === 201 || res.status === 200) {
-      form.setFieldValue("headPic", data.headPic);
       form.setFieldValue("nickName", data.nickName);
       form.setFieldValue("email", data.email);
-      console.log(data);
+      setHeadPic(data.headPic);
     }
   };
 
@@ -54,8 +60,11 @@ const UpdateInfo = () => {
     }
   }, []);
 
+  // 修改信息
   const onFinish = useCallback(async (infos: UserInfo) => {
-    const res = await updateInfo(infos);
+    const res = !isAdmin()
+      ? await updateInfo({ ...infos, headPic })
+      : await updateAdminInfo({ ...infos, headPic });
 
     const { code, message: msg, data } = res.data;
     if (code === 201 || code === 200) {
@@ -65,7 +74,8 @@ const UpdateInfo = () => {
     }
   }, []);
 
-  const handleChange = (info) => {
+  // 文件上传功能
+  const handleChange = (info: any) => {
     const { status } = info.file;
     if (status === "done") {
       setHeadPic(info.file.response.data);
@@ -86,11 +96,7 @@ const UpdateInfo = () => {
         colon={false}
         autoComplete="off"
       >
-        <Form.Item
-          label="头像"
-          name="headPic"
-          rules={[{ required: true, message: "请输入用户名" }]}
-        >
+        <Form.Item label="头像" name="headPic">
           <Upload
             listType="picture-circle"
             showUploadList={false}
@@ -101,7 +107,7 @@ const UpdateInfo = () => {
             <img
               src={"http://localhost:3000/" + headPic}
               alt="avatar"
-              style={{ width: "100%" }}
+              style={{ width: "100px", height: "100px", borderRadius: "50%" }}
             />
           </Upload>
         </Form.Item>

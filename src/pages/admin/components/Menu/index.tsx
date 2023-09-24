@@ -1,24 +1,32 @@
 import { Menu as AntdMenu, MenuProps } from "antd";
 import styles from "./index.less";
-import { useEffect, useState } from "react";
-import { Outlet } from "umi";
+import { Outlet, history, useLocation } from "umi";
 
 const items: MenuProps["items"] = [
   {
-    key: "1",
+    key: "/userManage",
     label: "会议室管理",
   },
   {
-    key: "2",
+    key: "/userManage",
     label: "预定管理",
   },
+
   {
-    key: "3",
+    key: "/userManage",
+    label: "统计",
+  },
+  {
+    key: "/userManage",
     label: "用户管理",
   },
   {
-    key: "4",
-    label: "统计",
+    key: "/updateInfo",
+    label: "信息修改",
+  },
+  {
+    key: "/updatePassword",
+    label: "密码修改",
   },
 ];
 
@@ -28,10 +36,16 @@ const type: any = {
 };
 
 const Menu = () => {
+  const localtion = useLocation();
   return (
     <div className={styles.container}>
       <div className={styles.menuArea}>
-        <AntdMenu defaultSelectedKeys={["3"]} items={items} />
+        <AntdMenu
+          style={{ height: "100%" }}
+          defaultSelectedKeys={[localtion.pathname.replace("/admin", "")]}
+          items={items}
+          onSelect={(e) => history.push(`/admin${e.key}`)}
+        />
       </div>
       <div className={styles.main}>
         <Outlet />

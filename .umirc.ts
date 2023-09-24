@@ -23,6 +23,16 @@ export default defineConfig({
           path: "/admin/userManage",
           component: "admin/UserManage",
         },
+        {
+          path: "/admin/updateInfo",
+          component: "UpdateInfo",
+        },
+        {
+          path: "/admin/updatePassword",
+          component: "UpdatePassword",
+        },
+
+        
       ],
     },
 

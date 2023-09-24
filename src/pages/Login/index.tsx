@@ -32,12 +32,24 @@ const Login = () => {
       localStorage.setItem("user_info", JSON.stringify(data.userInfo));
       if (typeLogin === "admin") {
       } else {
+        window.localStorage.setItem(
+          "roles",
+          JSON.stringify({ roleKey: "admin" })
+        );
         history.push("/admin/userManage");
       }
     } else {
       message.error(data || "登录异常，请重新登录");
     }
   };
+
+  useEffect(() => {
+    const rolesJsonStr = window.localStorage.getItem("roles");
+    const roles = JSON.parse(rolesJsonStr || "{}");
+    if (roles?.roleKey === "admin") {
+      history.push("/admin/userManage");
+    }
+  }, []);
   return (
     <div className={styles.login}>
       <Form
