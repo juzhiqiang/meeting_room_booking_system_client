@@ -2,6 +2,7 @@ import { axiosInstance } from "./requireInterface";
 import { RegisterUser } from "../Register";
 import { UpdatePassword } from "../UpdatePassword";
 import { UserInfo } from "../UpdateInfo";
+import { CreateMeetingRoom } from "../admin/MeetingRoomManage/EditMeetingRoom";
 // 通过接口-------------------------------------------------------------------
 // 获取用户信息
 export const getUserInfo = async () => {
@@ -102,10 +103,50 @@ export async function getUserList(
   });
 }
 
+// 更新后台管理用户信息
 export async function updateAdminInfo(data: UserInfo) {
   return await axiosInstance.post("/user/update/admin", data);
 }
 
+// 更新密码
 export async function updateAdminPassword(data: UpdatePassword) {
   return await axiosInstance.post("/user/admin/update_password", data);
+}
+
+// 获取会议室列表
+export async function meetingRoomList(
+  name: string,
+  capacity: number,
+  equipment: string,
+  pageNo: number,
+  pageSize: number
+) {
+  return await axiosInstance.get("/meeting-room/list", {
+    params: {
+      name,
+      capacity,
+      equipment,
+      pageNo,
+      pageSize,
+    },
+  });
+}
+
+// 删除会议室
+export async function deleteMeetingRoom(id: number) {
+  return await axiosInstance.delete("/meeting-room/" + id);
+}
+
+// 创建会议室
+export async function createMeetingRoom(meetingRoom: CreateMeetingRoom) {
+  return await axiosInstance.post("/meeting-room/create", meetingRoom);
+}
+
+// 查询单个会议室
+export async function getRoomInfo(id: number | string) {
+  return await axiosInstance.get("/meeting-room/" + id);
+}
+
+export async function updateRoomInfo(meetingRoom: any) {
+  return await axiosInstance.put("/meeting-room/update", meetingRoom);
 }

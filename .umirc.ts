@@ -6,7 +6,7 @@ export default defineConfig({
     {
       path: "/",
       routes: [{ path: "/update_info", component: "UpdateInfo" }],
-      // redirect: "/login",
+      redirect: "/login",
     },
     // 公共模块
     { path: "/register", component: "Register" },
@@ -19,6 +19,16 @@ export default defineConfig({
       path: "admin",
       component: "admin/components/Menu",
       routes: [
+        {
+          path: "/admin/meetingRoomManage",
+          component: "admin/MeetingRoomManage",
+        },
+        {
+          path: "/admin/bookingManage",
+          component: "admin/BookingManage",
+        },
+
+        
         {
           path: "/admin/userManage",
           component: "admin/UserManage",

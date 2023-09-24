@@ -4,14 +4,13 @@ import { Outlet, history, useLocation } from "umi";
 
 const items: MenuProps["items"] = [
   {
-    key: "/userManage",
+    key: "/meetingRoomManage",
     label: "会议室管理",
   },
   {
-    key: "/userManage",
+    key: "/bookingManage",
     label: "预定管理",
   },
-
   {
     key: "/userManage",
     label: "统计",
