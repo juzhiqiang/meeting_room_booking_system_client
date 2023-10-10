@@ -31,6 +31,7 @@ const Login = () => {
       localStorage.setItem("refresh_token", data.refreshToken);
       localStorage.setItem("user_info", JSON.stringify(data.userInfo));
       if (typeLogin === "admin") {
+        history.push("/meetingRoomList");
       } else {
         window.localStorage.setItem(
           "roles",
@@ -47,8 +48,9 @@ const Login = () => {
     const rolesJsonStr = window.localStorage.getItem("roles");
     const roles = JSON.parse(rolesJsonStr || "{}");
     if (roles?.roleKey === "admin") {
-      history.push("/admin/userManage");
+      return history.push("/admin/userManage");
     }
+    if (roles?.roleKey === "user") history.push("/meetingRoomList");
   }, []);
   return (
     <div className={styles.login}>
