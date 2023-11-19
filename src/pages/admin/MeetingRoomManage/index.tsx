@@ -21,7 +21,7 @@ interface SearchMeetingRoom {
   equipment: string;
 }
 
-interface MeetingRoomSearchResult {
+export interface MeetingRoomSearchResult {
   id: number;
   name: string;
   capacity: number;

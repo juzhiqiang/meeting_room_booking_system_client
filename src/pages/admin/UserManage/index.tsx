@@ -15,7 +15,7 @@ interface SearchUser {
   email: string;
 }
 
-interface UserSearchResult {
+export interface UserSearchResult {
   username: string;
   nickName: string;
   email: string;

@@ -12,6 +12,7 @@
     "@ant-design/icons": "^5.2.5",
     "antd": "^5.8.4",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.10",
     "umi": "^4.0.76"
   },
   "devDependencies": {
