@@ -31,6 +31,10 @@ const Login = () => {
       localStorage.setItem("refresh_token", data.refreshToken);
       localStorage.setItem("user_info", JSON.stringify(data.userInfo));
       if (typeLogin === "admin") {
+        window.localStorage.setItem(
+          "roles",
+          JSON.stringify({ roleKey: "user" })
+        );
         history.push("/meetingRoomList");
       } else {
         window.localStorage.setItem(

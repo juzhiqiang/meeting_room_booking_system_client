@@ -37,7 +37,7 @@ interface BookingSearchResult {
 }
 import styles from "./index.less";
 import { useForm } from "antd/es/form/Form";
-import { apply, bookingList, reject, unbind } from "@/pages/api";
+import { apply, bookingList, commonApi, reject } from "@/pages/api";
 
 const BookingManage = () => {
   const [pageNo, setPageNo] = useState<number>(1);
@@ -46,6 +46,8 @@ const BookingManage = () => {
   const [bookingSearchResult, setBookingSearchResult] = useState<
     Array<BookingSearchResult>
   >([]);
+
+  const unbind = commonApi.unbind;
 
   const columns: ColumnsType<BookingSearchResult> = [
     {

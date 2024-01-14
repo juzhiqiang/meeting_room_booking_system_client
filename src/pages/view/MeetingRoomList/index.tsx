@@ -4,6 +4,7 @@ import Table, { ColumnsType } from "antd/es/table";
 import { Badge, Button, Form, Input, message } from "antd";
 import { getMeetingRoomList } from "@/pages/api/client";
 import { useForm } from "antd/es/form/Form";
+import { CreateBookingModal } from "./CreateBookingModal";
 
 interface GetMettingRoomList {
   name: string;
@@ -29,6 +30,9 @@ const MeetingRoomList = () => {
   const [meetingRoomResult, setMeetingRoomResult] = useState<
     Array<MeetingRoomSearchResult>
   >([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [currentMeetingRoom, setCurrentMeetingRoom] =
+    useState<MeetingRoomSearchResult>();
 
   const columns: ColumnsType<MeetingRoomSearchResult> = useMemo(
     () => [
@@ -74,7 +78,15 @@ const MeetingRoomList = () => {
         title: "操作",
         render: (_, record) => (
           <div>
-            <a href="#">预定</a>
+            <a
+              href="#"
+              onClick={() => {
+                setIsCreateModalOpen(true);
+                setCurrentMeetingRoom(record);
+              }}
+            >
+              预定
+            </a>
           </div>
         ),
       },
@@ -149,7 +161,6 @@ const MeetingRoomList = () => {
         </Form>
       </div>
       <div className="meetingRoomList-table">
-        {console.log(meetingRoomResult)}
         <Table
           columns={columns}
           dataSource={meetingRoomResult}
@@ -160,6 +171,16 @@ const MeetingRoomList = () => {
           }}
         />
       </div>
+
+      {currentMeetingRoom ? (
+        <CreateBookingModal
+          meetingRoom={currentMeetingRoom}
+          isOpen={isCreateModalOpen}
+          handleClose={() => {
+            setIsCreateModalOpen(false);
+          }}
+        ></CreateBookingModal>
+      ) : null}
     </div>
   );
 };
