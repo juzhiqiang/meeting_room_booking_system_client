@@ -12,8 +12,8 @@ const items: MenuProps["items"] = [
     label: "预定管理",
   },
   {
-    key: "/userManage",
-    label: "统计",
+    key: "/bookingHistory",
+    label: "预定记录",
   },
   {
     key: "/userManage",

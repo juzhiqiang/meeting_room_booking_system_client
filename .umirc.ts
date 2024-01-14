@@ -32,7 +32,10 @@ export default defineConfig({
           path: "/admin/bookingManage",
           component: "admin/BookingManage",
         },
-
+        {
+          path: "/admin/bookingHistory",
+          component: "admin/BookingHistory",
+        },
         {
           path: "/admin/userManage",
           component: "admin/UserManage",
