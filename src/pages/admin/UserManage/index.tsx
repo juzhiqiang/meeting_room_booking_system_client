@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import styles from "./index.less";
 import { ColumnsType } from "antd/es/table";
 import { getUserList } from "@/pages/api";
+import dayjs from "dayjs";
 interface SearchUser {
   username: string;
   nickName: string;
@@ -49,13 +50,16 @@ const columns: ColumnsType<UserSearchResult> = [
   {
     title: "注册时间",
     dataIndex: "createTime",
+    render: (value) => {
+      return dayjs(value).format("YYYY-MM-DD HH:mm:ss");
+    },
   },
 ];
 
 const UserManage = () => {
   const [pageNo, setPageNo] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(2);
-  const [pageTotal, setPageTotal] = useState<number>(2);
+  const [pageSize, setPageSize] = useState<number>(20);
+  const [pageTotal, setPageTotal] = useState<number>(20);
   const [userResult, setUserResult] = useState<UserSearchResult[]>();
 
   const searchUser = useCallback(

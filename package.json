@@ -13,6 +13,7 @@
     "antd": "^5.8.4",
     "axios": "^1.4.0",
     "dayjs": "^1.11.10",
+    "echarts": "^5.4.3",
     "umi": "^4.0.76"
   },
   "devDependencies": {

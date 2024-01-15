@@ -12,12 +12,12 @@ const items: MenuProps["items"] = [
     label: "预定管理",
   },
   {
-    key: "/bookingHistory",
-    label: "预定记录",
-  },
-  {
     key: "/userManage",
     label: "用户管理",
+  },
+  {
+    key: "/statistics",
+    label: "统计",
   },
   {
     key: "/updateInfo",

@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { SearchBooking } from "../admin/BookingManage";
 import { CommonApi } from "./common";
 import { ClientApi } from "./clients";
+import { AdminApi } from "./admin";
 // 通过接口-------------------------------------------------------------------
 // 获取用户信息
 export const getUserInfo = async () => {
@@ -209,5 +210,6 @@ export async function reject(id: number) {
 
 const commonApi = new CommonApi();
 const clientApi = new ClientApi();
+const adminApi = new AdminApi();
 
-export { clientApi, commonApi };
+export { clientApi, commonApi, adminApi };
